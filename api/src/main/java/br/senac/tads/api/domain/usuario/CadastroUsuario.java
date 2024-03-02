@@ -1,4 +1,4 @@
-package br.senac.tads.api.usuario;
+package br.senac.tads.api.domain.usuario;
 
 public class CadastroUsuario {
 	private String nome;

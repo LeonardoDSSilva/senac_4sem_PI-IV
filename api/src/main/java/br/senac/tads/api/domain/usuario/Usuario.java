@@ -1,4 +1,4 @@
-package br.senac.tads.api.usuario;
+package br.senac.tads.api.domain.usuario;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,7 +51,7 @@ public class Usuario {
 		this.email = usuario.getEmail();
 		this.senha = usuario.getSenha();
 		this.ativo = true;
-		this.tipo = TipoUsuario.ADMINISTRADOR;
+		this.tipo = usuario.getTipo();
 	}
 
 	public Long getId() {
