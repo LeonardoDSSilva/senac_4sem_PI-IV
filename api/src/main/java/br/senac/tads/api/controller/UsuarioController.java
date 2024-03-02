@@ -1,5 +1,6 @@
 package br.senac.tads.api.controller;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.senac.tads.api.usuario.CadastroUsuario;
-import br.senac.tads.api.usuario.LogarUsuario;
-import br.senac.tads.api.usuario.Usuario;
-import br.senac.tads.api.usuario.UsuarioRepository;
+import br.senac.tads.api.domain.usuario.CadastroUsuario;
+import br.senac.tads.api.domain.usuario.ListaUsuario;
+import br.senac.tads.api.domain.usuario.LogarUsuario;
+import br.senac.tads.api.domain.usuario.Usuario;
+import br.senac.tads.api.domain.usuario.UsuarioRepository;
 import lombok.val;
 
 @RestController
@@ -54,6 +56,7 @@ public class UsuarioController {
 
 	}
 
+	// Método para logar o usuário
 	@GetMapping("/login")
 	public ResponseEntity<Boolean> logarUsuario(@RequestBody LogarUsuario usuario) {
 
@@ -75,4 +78,36 @@ public class UsuarioController {
 
 	}
 
+	// Método para Lista todos os usuários
+	@GetMapping
+	public ResponseEntity<Iterable<ListaUsuario>> listarUsuarios() {
+		Iterable<Usuario> usuarios = repository.findAll();
+
+		// Use record para simplificar a criação de objetos imutáveis
+		var lista = new ArrayList<ListaUsuario>();
+		for (Usuario usuario : usuarios) {
+			lista.add(new ListaUsuario(usuario.getId(), usuario.getNome(), usuario.getCpf(), usuario.getEmail(),
+					usuario.getTipo(), usuario.getAtivo()));
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(lista);
+	}
+
+	// Método para editar um usuário
+	@PostMapping("/editar")
+	@Transactional
+	public ResponseEntity<String> editarUsuario(@RequestBody Usuario usuario) {
+
+		// Verifica se o usuário existe
+		Optional<Usuario> optUsuario = repository.findById(usuario.getId());
+		if (optUsuario.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+		}
+
+		// Atualiza o usuário
+		repository.save(usuario);
+
+		// Retorna o resultado
+		return ResponseEntity.status(HttpStatus.OK).body("Usuário atualizado com sucesso");
+
+	}
 }
