@@ -16,6 +16,7 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String cpf;
 	private String nome;
 	private String email;
 	private String senha;
@@ -25,8 +26,18 @@ public class Usuario {
 	public Usuario() {
 	}
 
-	public Usuario(Long id, String nome, String email, String senha, Boolean ativo, TipoUsuario tipo) {
+	public Usuario(String email) {
+		this.email = email;
+	}
+
+	public Usuario(LogarUsuario usuario) {
+		this.email = usuario.email();
+		this.senha = usuario.senha();
+	}
+
+	public Usuario(Long id, String cpf, String nome, String email, String senha, Boolean ativo, TipoUsuario tipo) {
 		this.id = id;
+		this.cpf = cpf;
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
@@ -35,51 +46,12 @@ public class Usuario {
 	}
 
 	public Usuario(CadastroUsuario usuario) {
-		this.nome = usuario.nome();
-		this.email = usuario.email();
-		this.senha = usuario.senha();
-		this.ativo = usuario.ativo();
-		this.tipo = usuario.tipo();
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public TipoUsuario getTipo() {
-		return tipo;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public void setTipo(TipoUsuario tipo) {
-		this.tipo = tipo;
-	}
-
-	public Boolean getAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
+		this.cpf = usuario.getCpf();
+		this.nome = usuario.getNome();
+		this.email = usuario.getEmail();
+		this.senha = usuario.getSenha();
+		this.ativo = true;
+		this.tipo = TipoUsuario.ADMINISTRADOR;
 	}
 
 	public Long getId() {
@@ -90,9 +62,52 @@ public class Usuario {
 		this.id = id;
 	}
 
-	@Override
-	public String toString() {
-		return "Usuario [id=" + id + ", nome=" + nome + ", email=" + email + ", senha=" + senha + ", ativo=" + ativo
-				+ ", tipo=" + tipo + "]";
+	public String getCpf() {
+		return cpf;
 	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	public TipoUsuario getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoUsuario tipo) {
+		this.tipo = tipo;
+	}
+
 }
