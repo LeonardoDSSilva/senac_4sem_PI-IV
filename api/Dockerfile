@@ -1,5 +1,4 @@
-FROM ubuntu:20.10 AS build
-
+FROM ubuntu:latest as build
 # Install build dependencies
 RUN apt-get update
 RUN apt-get install openjdk-21 -y
