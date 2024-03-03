@@ -1,5 +1,5 @@
 CREATE TABLE usuarios(
-	id bigint NOT NULL AUTO_INCREMENT,
+	id SERIAL NOT NULL,
 	cpf varchar(11) NOT NULL UNIQUE,
 	nome varchar(100) NOT NULL,
 	email varchar(100) NOT NULL UNIQUE,
