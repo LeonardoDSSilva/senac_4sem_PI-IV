@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,14 +94,45 @@ public class UsuarioController {
 	}
 
 	// Método para editar um usuário
-	@PostMapping("/editar")
+	@PostMapping("/editar/{id}")
 	@Transactional
-	public ResponseEntity<String> editarUsuario(@RequestBody Usuario usuario) {
+	public ResponseEntity<String> editarUsuario(@PathVariable("id") Long id, @RequestBody Usuario usuario) {
 
 		// Verifica se o usuário existe
-		Optional<Usuario> optUsuario = repository.findById(usuario.getId());
+		Optional<Usuario> optUsuario = repository.findById(id);
 		if (optUsuario.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+		}
+
+		// Verifica se o e-mail já está cadastrado
+		Optional<Usuario> optUsuarioEmail = repository.findByEmail(usuario.getEmail());
+		if (optUsuarioEmail.isPresent() && optUsuarioEmail.get().getId() != id) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("E-mail já cadastrado");
+		}
+
+		// Verifica se a senha foi informada
+		if (usuario.getSenha() != null) {
+			usuario.setSenha(encoder.encode(usuario.getSenha()));
+		}
+
+		// Verifica se o tipo foi informado
+		if (usuario.getTipo() == null) {
+			usuario.setTipo(optUsuario.get().getTipo());
+		}
+
+		// Verifica se o ativo foi informado
+		if (usuario.getAtivo() == null) {
+			usuario.setAtivo(optUsuario.get().getAtivo());
+		}
+
+		// Verifica se o nome foi informado
+		if (usuario.getNome() == null) {
+			usuario.setNome(optUsuario.get().getNome());
+		}
+
+		// Verifica se o cpf foi informado
+		if (usuario.getCpf() == null) {
+			usuario.setCpf(optUsuario.get().getCpf());
 		}
 
 		// Atualiza o usuário
