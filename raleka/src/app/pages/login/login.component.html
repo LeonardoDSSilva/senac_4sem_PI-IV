@@ -1,0 +1,35 @@
+<form [formGroup]="loginForm">
+	<div class="form-group">
+		<label for="username">EMAIL</label>
+		<input type="text" id="username" formControlName="email">
+		@if (loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)) {
+		<div class="alert alert-danger">
+			@if (loginForm.get('email')?.errors?.['required']) {
+			<div>
+				Email é obrigatório.
+			</div>
+			}
+			@if (loginForm.get('email')?.errors?.['email']) {
+			<div>
+				Email inválido.
+			</div>
+			}
+		</div>
+		}
+	</div>
+	<div class="form-group">
+		<label for="senha">SENHA</label>
+		<input type="senha" id="senha" formControlName="senha">
+		@if (loginForm.get('senha')?.invalid && (loginForm.get('senha')?.dirty || loginForm.get('senha')?.touched)) {
+		<div class="alert alert-danger">
+			@if (loginForm.get('senha')?.errors?.['required']) {
+			<div>
+				Senha é obrigatória.
+			</div>
+			}
+		</div>
+		}
+	</div>
+	<button type="submit" class="btn btn-primary">Login</button>
+	<a [routerLink]="['/cadastar']">Cadastrar</a>
+</form>
