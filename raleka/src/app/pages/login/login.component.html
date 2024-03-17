@@ -1,35 +1,29 @@
 <form [formGroup]="loginForm">
-	<div class="form-group">
-		<label for="username">EMAIL</label>
-		<input type="text" id="username" formControlName="email">
-		@if (loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)) {
-		<div class="alert alert-danger">
+	<div class="form-group" class="mb-3">
+		<mat-form-field>
+			<mat-label for="username">EMAIL</mat-label>
+			<input type="text" id="username" formControlName="email">
+			@if (loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched))
+			{
 			@if (loginForm.get('email')?.errors?.['required']) {
-			<div>
-				Email é obrigatório.
-			</div>
+			<mat-error>Email é obrigatório.</mat-error>
 			}
 			@if (loginForm.get('email')?.errors?.['email']) {
-			<div>
-				Email inválido.
-			</div>
+			<mat-error>Email inválido.</mat-error>}
 			}
-		</div>
-		}
+		</mat-form-field>
 	</div>
 	<div class="form-group">
-		<label for="senha">SENHA</label>
-		<input type="senha" id="senha" formControlName="senha">
-		@if (loginForm.get('senha')?.invalid && (loginForm.get('senha')?.dirty || loginForm.get('senha')?.touched)) {
-		<div class="alert alert-danger">
-			@if (loginForm.get('senha')?.errors?.['required']) {
-			<div>
-				Senha é obrigatória.
-			</div>
+		<mat-form-field>
+			<mat-label for="senha">SENHA</mat-label>
+			<input type="password" id="senha" formControlName="senha">
+			@if (loginForm.get('senha')?.invalid && (loginForm.get('senha')?.dirty || loginForm.get('senha')?.touched))
+			{
+				@if (loginForm.get('senha')?.errors?.['required']) {
+				<mat-error>Senha é obrigatória.</mat-error> }
 			}
-		</div>
-		}
+		</mat-form-field>
 	</div>
 	<button type="submit" class="btn btn-primary">Login</button>
-	<a [routerLink]="['/cadastar']">Cadastrar</a>
+	<button type="button" class="btn btn-secondary" routerLink="/cadastro">Cadastrar</button>
 </form>
